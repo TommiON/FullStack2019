@@ -43,6 +43,7 @@ const Statistics = (props) => {
         <div>
             <table>
                 <tbody>
+                    
                 <tr>
                     <td>hyvä</td><td><Statistic tyyppi='hyvät' hyvia={props.hyvia} neutraaleja={props.neutraaleja} huonoja={props.huonoja} /></td>
                 </tr>
@@ -61,6 +62,7 @@ const Statistics = (props) => {
                 <tr>
                     <td>positiivisia</td><td> <Statistic tyyppi='positiiviset' hyvia={props.hyvia} neutraaleja={props.neutraaleja} huonoja={props.huonoja} /></td>
                 </tr>
+
                 </tbody>
             </table>
         </div>
