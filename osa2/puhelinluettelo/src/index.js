@@ -18,18 +18,14 @@ const App = () => {
     .then(saatu => setPersons(saatu))
   }, [])
 
-  // useEffectin() toiseksi argumentiksi tyhjä [], jos ei haluta toistaa uudelleen joka renreröinnillä
-
   const lisaaNimi = (event) => {
       event.preventDefault()
       const nimet = persons.map(henkilo => henkilo.name)
       if(nimet.includes(newName)) {
         if (window.confirm(`Nimi on jo luettelossa, korvataanko numero?`)) {
           const nro = persons.find(pers => pers.name === newName).id
-          console.log('päivitettävän id: ', nro)
-          console.log(newNumber)
           DbService.replace(nro, newName, newNumber)
-          .then(saatu => setPersons(persons.concat(saatu)))
+          .then(saatu => setPersons(persons.map(person => person.id === saatu.id ? saatu : person)))
           .then(setStatusMessage(`Käyttäjän ${newName} numero muutettu`))
           .then(setNewName(''))
           .then(setNewNumber(''))
@@ -53,16 +49,12 @@ const App = () => {
       }
   }
 
-  // pitää jotenkin saada renderöimään poiston jälkeen heti, miksi toimii vasta yhden viiveellä?
-  // sama juttu olemassaolevan numeron korvaamisessa
   const poistaNimi = (id) => {
     if (window.confirm(`Poistetaanko henkilö luettelosta?`)) {
         DbService
         .remove(id)
-        .then(DbService
-          .getAll()
-          .then(saatu => setPersons(saatu)))
-          .then(setStatusMessage(`Poistettu (as if)`))    
+        .then(paluu => setPersons(persons.filter(person => person.id !== id)))
+        .then(setStatusMessage(`Poistettu`))
     }
     setTimeout(() => {setStatusMessage(null)}, 3000)
   }
