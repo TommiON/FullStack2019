@@ -4,18 +4,24 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js",
-    "watch": "nodemon index.js"
+    "test": "NODE_ENV=test jest --verbose --runInBand --detectOpenHandles",
+    "start": "NODE_ENV=production node index.js",
+    "watch": "NODE_ENV=development nodemon index.js"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "nodemon": "^1.19.0"
+    "jest": "^24.8.0",
+    "nodemon": "^1.19.0",
+    "supertest": "^4.0.2"
   },
   "dependencies": {
     "cors": "^2.8.5",
+    "dotenv": "^8.0.0",
     "express": "^4.17.0",
     "mongoose": "^5.5.9"
+  },
+  "jest": {
+    "testEnvironment": "node"
   }
 }
