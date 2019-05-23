@@ -1,13 +1,13 @@
 const listHelper = require('../utils/list_helper')
 
-describe('Number of likes', () => {
-  test('when blog array empty', () => {
+describe('Tykkäysten kokonaismäärä oikein', () => {
+  test('kun ei yhtään blogia', () => {
     const blogs = []
     const result = listHelper.totalLikes(blogs)
     expect(result).toBe(0)
   })
 
-  test('with one liked blog', () => {
+  test('kun yhdellä blogilla on tykkäyksiä', () => {
     const blogs = [
       {
         _id: "5ce184a20155314cf60f79e5",
@@ -30,7 +30,7 @@ describe('Number of likes', () => {
     expect(result).toBe(1)
   })
 
-  test('with many liked blogs', () => {
+  test('kun blogeja on monta', () => {
     const blogs = [
       {
         _id: "5ce184a20155314cf60f79e5",
@@ -54,7 +54,7 @@ describe('Number of likes', () => {
   })
 })
 
-test('Find most liked blog', () => {
+test('Eniten tykäytty blogi löytyy', () => {
   const blogs = [
     { _id: "5ce184a20155314cf60f79f5",
       title: "xxx",
