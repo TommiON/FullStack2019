@@ -81,9 +81,11 @@ test('Tykkäykset alustetaan nollaan jos arvo puuttuu', async () => {
     expect(lisattyBlogi.likes).toBe(0)
 })
 
-test('Jos otsikko ja url puuttuvat, ei voi lisätä', async () => {
-    // tää loppuun
-    expect(1).toBe(1)
+test('Jos otsikko ja url puuttuvat, post-pyyntö hylätään', async () => {
+    const uusiBlogi = {
+        author: "joku"
+    }
+    await api.post('/api/blogs').send(uusiBlogi).expect(400)
 })
 
 afterAll(() => {
