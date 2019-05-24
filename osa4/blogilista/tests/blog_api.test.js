@@ -42,6 +42,50 @@ test('Oikea määrä blogeja JSON-muodossa', async () => {
     expect(saadutBlogit.body.length).toBe(2)
 })
 
+test('Identifioiva kenttä on nimeltään id', async () => {
+    const saadutBlogit = await api.get('/api/blogs')
+    expect(saadutBlogit.body[0].id).toBeDefined()
+})
+
+test('Voi lisätä uuden blogin', async () => {
+    const uusiBlogi = {
+        title: "jotain",
+        author: "joku",
+        url: "zzz",
+        likes: 0
+    }
+    
+    await api
+    .post('/api/blogs')
+    .send(uusiBlogi)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+    const vastaus = await api.get('/api/blogs')
+    const otsikot = vastaus.body.map(v => v.title)
+    expect(vastaus.body.length).toBe(testBlogs.length + 1)
+    expect(otsikot).toContain('jotain')
+})
+
+test('Tykkäykset alustetaan nollaan jos arvo puuttuu', async () => {
+    const uusiBlogi = {
+        title: "jotain",
+        author: "joku",
+        url: "zzz"
+    }
+
+    await api.post('/api/blogs').send(uusiBlogi)
+
+    const vastaus = await api.get('/api/blogs')
+    const lisattyBlogi = vastaus.body.find(blogi => blogi.title === 'jotain')
+    expect(lisattyBlogi.likes).toBe(0)
+})
+
+test('Jos otsikko ja url puuttuvat, ei voi lisätä', async () => {
+    // tää loppuun
+    expect(1).toBe(1)
+})
+
 afterAll(() => {
     mongoose.connection.close()
   })

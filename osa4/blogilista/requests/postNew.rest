@@ -2,8 +2,8 @@ POST http://localhost:3003/api/blogs
 content-type: application/json
 
 {
-    "title": "xxx",
-    "author": "yyy",
-    "url": "www.mondaynote.com",
+    "title": "kolmas",
+    "author": "vieäläkin testataan",
+    "url": "xxx.com",
     "likes": 0
 }
