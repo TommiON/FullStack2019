@@ -1,0 +1,11 @@
+PUT http://localhost:3003/api/blogs/5ce930487ba89b0b809e9447
+content-type: application/json
+
+{
+    "title": "JA TAAS MUUTTUU!!!!",
+    "author": "vieäläkin testataan",
+    "url": "xxx.com",
+    "likes": 1234,
+    "id:": "5ce948b6cc9e1c0edbe086dc",
+    "__v": 0
+}

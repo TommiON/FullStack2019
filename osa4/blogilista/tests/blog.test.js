@@ -92,6 +92,31 @@ test('Eniten tykäytty blogi löytyy', () => {
   expect(result).toEqual(mostLiked)
 })
 
+test('ahkerin kirjoittaja', () => {
+  const blogs = [
+    {
+      title: "Monday Note",
+      author: "Hanna",
+      url: "www.mondaynote.com",
+      likes: 100,
+      },
+      {
+      title: "Daring F",
+      author: "Tommi",
+      url: "www.mondaynote.com",
+      likes: 1,
+      },
+      {
+        title: "xxx",
+        author: "Tommi",
+        url: "www.mondaynote.com",
+        likes: 0,
+      }
+  ]
+  const results = listHelper.mostBlogs(blogs)
+  expect(1).toBe(1)
+})
+
 test('dummy returns one', () => {
   const blogs = []
   const result = listHelper.dummy(blogs)
