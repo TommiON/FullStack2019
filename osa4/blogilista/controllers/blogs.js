@@ -1,11 +1,12 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 const bodyParser = require('body-parser')
 blogsRouter.use(bodyParser.json())
 
 blogsRouter.get('/', async (request, response) => {
-    const blogs = await Blog.find({})
+    const blogs = await Blog.find({}).populate('user')
     response.json(blogs)
 })
   
@@ -17,11 +18,18 @@ blogsRouter.post('/', async (request, response) => {
 
     const blog = new Blog(request.body)
     
+    // väliaikainen purkkaratkaisu, miten saadaan eka?
+    const users = await User.find({})
+    const first = users[0].id
+    blog.user = first
+    // first.blogs = first.blogs.concat(blog)
+    
     if(!request.body.likes) {
       blog.likes = 0
     }
   
     await blog.save()
+    // await first.save()
     response.status(201).json(blog)
 })
 
