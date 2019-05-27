@@ -22,12 +22,12 @@ usersRouter.post('/', async (request, response, next) => {
         }
 
         const salting = 10
-        const passwordHash = await bcrypt.hash(body.password, salting)
+        const salattuSalasana = await bcrypt.hash(body.password, salting)
 
         const user = new User({
             username: body.username,
             name: body.name,
-            passwordHash,
+            passwordHash: salattuSalasana,
         })
 
         const savedUser = await user.save()

@@ -2,7 +2,7 @@ POST http://localhost:3003/api/blogs
 content-type: application/json
 
 {
-    "title": "testing testings",
+    "title": "toinenkin",
     "author": "vieäläkin testataan",
     "url": "xxx.com",
     "likes": 0
