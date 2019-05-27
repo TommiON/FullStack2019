@@ -1,9 +1,10 @@
 POST http://localhost:3003/api/blogs
 content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ikhhbm5hIiwiaWQiOiI1Y2ViY2UxYjFjZjAxZjEzMTI3OTA2NzEiLCJpYXQiOjE1NTg5NjE1NjR9.Te5oCeydbzRxLp696JfbYmlWOhQWQtFz2kWg6qL_hmI
 
 {
-    "title": "toinenkin",
+    "title": "Taas mennään",
     "author": "vieäläkin testataan",
     "url": "xxx.com",
-    "likes": 0
+    "likes": 0    
 }

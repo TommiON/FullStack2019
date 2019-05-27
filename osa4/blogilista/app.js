@@ -6,15 +6,6 @@ const cors = require('cors')
 const mongoose = require('mongoose')
 const config = require('./utils/config')
 
-const tokenExtractor = (request, response, next) => {
-    const authorization = request.get('authorization')
-    if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-        request = {...request, token: authorization.substring(7) }
-    }
-    next()
-}
-app.use(tokenExtractor)
-
 const blogsRouter = require('./controllers/blogs')
 app.use('/api/blogs', blogsRouter)
 
