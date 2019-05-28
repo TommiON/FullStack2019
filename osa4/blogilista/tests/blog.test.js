@@ -111,9 +111,47 @@ test('ahkerin kirjoittaja', () => {
         author: "Tommi",
         url: "www.mondaynote.com",
         likes: 0,
+      },
+      {
+        title: "xxx",
+        author: "Tommi",
+        url: "www.mondaynote.com",
+        likes: 0,
       }
   ]
   const results = listHelper.mostBlogs(blogs)
+  expect(results.author).toBe('Tommi')
+  expect(results.blogs).toBe(3)
+})
+
+test('tykätyin kirjoittaja', () => {
+  const blogs = [
+    {
+      title: "Monday Note",
+      author: "Hanna",
+      url: "www.mondaynote.com",
+      likes: 100,
+      },
+      {
+      title: "Daring F",
+      author: "Tommi",
+      url: "www.mondaynote.com",
+      likes: 1,
+      },
+      {
+        title: "xxx",
+        author: "Tommi",
+        url: "www.mondaynote.com",
+        likes: 0,
+      },
+      {
+        title: "xxx",
+        author: "Tommi",
+        url: "www.mondaynote.com",
+        likes: 0,
+      }
+  ]
+  const results = listHelper.mostLikes(blogs)
   expect(1).toBe(1)
 })
 

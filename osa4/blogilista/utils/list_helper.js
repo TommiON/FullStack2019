@@ -22,14 +22,29 @@ const favoriteBlog = (blogs) => {
 const mostBlogs = (blogs) => {
     const kirjoitukset = blogs.map(blog => blog.author)
     const frek = lodash.countBy(kirjoitukset)
-    console.log(frek)
-    
+    const blogeja = Object.values(frek)
+    const max = blogeja.reduce(function(a,b) {
+        return Math.max(a,b)
+    })
+    const maxIndex = blogeja.findIndex(x => x === max)
+    const kirjoittajat = Object.keys(frek)
+    const ahkerin = kirjoittajat[maxIndex]
+    const palautus = {
+        author: ahkerin,
+        blogs: max
+      }
+    console.log(palautus)
+    return palautus
 }
 
-  
+const mostLikes = (blogs) => {
+    // tämä vielä kesken!
+}
+
 module.exports = {
     dummy,
     totalLikes,
     favoriteBlog,
-    mostBlogs
+    mostBlogs,
+    mostLikes
 }
