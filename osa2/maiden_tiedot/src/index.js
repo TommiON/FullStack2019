@@ -4,9 +4,9 @@ import './index.css';
 import axios from 'axios'
 
 const App = () => {
-    const [countries, setCountries] = useState([])
-    const [filteredCountries, setFilteredCountries] = useState([])
-    const [filter, setFilter] = useState('')
+    var [countries, setCountries] = useState([])
+    var [filter, setFilter] = useState('')
+    var [filteredCountries, setFilteredCountries] = useState([])
 
     useEffect(() => {
         axios
@@ -18,39 +18,55 @@ const App = () => {
     }, [])
 
     const changeFiltering = (event) => {
-        event.preventDefault()
         setFilter(event.target.value)
-        console.log('filtteri: ', filter)
-        setFilteredCountries(countries)
-        const filtered = countries.filter(country => country.name.toLowerCase().includes(filter.toLowerCase()))
-        setFilteredCountries(filtered)
+        setFilteredCountries(countries.filter(country => country.name.toLowerCase().includes(event.target.value.toLowerCase())))
+        console.log('maita: ', filteredCountries.length)
+        console.log(filteredCountries)
+    }
+
+    const chooseCountry = (countryName) => {
+        setFilter(countryName)
+        setFilteredCountries(countries.filter(country => country.name === countryName))
     }
 
     return(
         <div>
-            <form>Find countries <input value={filter} onChange={changeFiltering} /></form>
-            <Maat filtered={filteredCountries}/>
+            <h1>Find countries</h1>
+            <form><input value={filter} onChange={changeFiltering} /></form>
+            <Maat filtered={filteredCountries} handler={chooseCountry}/>
         </div>
     )
 }
 
-const Maat = ({filtered}) => {
-    if(filtered.length > 10) {
+const Maat = (props) => {
+    console.log('maita:', props.filtered.length)
+    if(props.filtered.length > 10 || props.filtered === null) {
         return(
             <p>Too many matches, narrow down the filtering!</p>
         )
     }
     
-    if(filtered.length > 1 && filtered.length <= 10) {
-        filtered.map(country => {
-            return(<p>{country.name}</p>)
-        })
+    if(props.filtered.length > 1 && props.filtered.length <= 10) {
+        return(
+            <ul>
+            {props.filtered.map(country => <MaanNimi key={country.name} country={country} handler={props.handler} />)}
+            </ul>
+        )
     }
-    
+   
     return(
         <ul>
-            {filtered.map(country => <Maa key={country.name} country={country} />)}
+            {props.filtered.map(country => <Maa key={country.name} country={country} />)}
         </ul>
+    )
+}
+
+const MaanNimi = (props) => {
+    return(
+        <div>
+            <h3>{props.country.name}</h3>
+            <button onClick={() => props.handler(props.country.name)}>Look up this country</button>
+        </div>
     )
 }
 
@@ -66,8 +82,19 @@ const Maa = ({country}) => {
         </ul>
         <br></br>
         <img src={country.flag} width="200" alt="lippu"/>
+        { console.log('säätila: ', Saatila(country.capital)) }
         </div>
     )
+}
+
+const Saatila = (capital) => {
+    axios
+    .get(`http://api.apixu.com/v1/current.json?key=4eeda46b6dc84d118e454545192805&q=${capital}`)
+    .then(response => {
+            console.log('mitä saatiin säästä: ', response.data.current.condition.text)
+            return(1)
+    })
+
 }
 
 export default App
