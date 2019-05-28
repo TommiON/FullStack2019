@@ -82,19 +82,27 @@ const Maa = ({country}) => {
         </ul>
         <br></br>
         <img src={country.flag} width="200" alt="lippu"/>
-        { console.log('säätila: ', Saatila(country.capital)) }
+        <Saa capital={country.capital} />
         </div>
     )
 }
 
-const Saatila = (capital) => {
-    axios
-    .get(`http://api.apixu.com/v1/current.json?key=4eeda46b6dc84d118e454545192805&q=${capital}`)
-    .then(response => {
-            console.log('mitä saatiin säästä: ', response.data.current.condition.text)
-            return(1)
+const Saa = ({capital}) => {
+    var [weatherInfo, setWeatherInfo] = useState('')
+    useEffect(() => {
+        axios
+        .get(`http://api.apixu.com/v1/current.json?key=4eeda46b6dc84d118e454545192805&q=${capital}`)
+        .then(response => {
+            setWeatherInfo(response.data.current.condition.text)
+        })
     })
-
+    
+    return(
+        <div>
+            <h3>Weather in capital</h3>
+            {weatherInfo}
+        </div>
+    )
 }
 
 export default App
