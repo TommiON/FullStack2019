@@ -37,8 +37,9 @@ const mostBlogs = (blogs) => {
     return palautus
 }
 
+// jäi kesken
 const mostLikes = (blogs) => {
-    // tämä vielä kesken!
+  
 }
 
 module.exports = {

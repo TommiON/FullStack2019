@@ -124,6 +124,7 @@ test('ahkerin kirjoittaja', () => {
   expect(results.blogs).toBe(3)
 })
 
+// jäi kesken
 test('tykätyin kirjoittaja', () => {
   const blogs = [
     {

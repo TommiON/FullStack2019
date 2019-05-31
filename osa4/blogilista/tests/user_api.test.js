@@ -52,4 +52,4 @@ describe('Uuden käyttäjän luominen', () => {
 
 afterAll(() => {
     mongoose.connection.close()
-  })
+})

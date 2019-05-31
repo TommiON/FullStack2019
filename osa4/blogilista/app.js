@@ -3,6 +3,7 @@ const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 const cors = require('cors')
+app.use(cors())
 const mongoose = require('mongoose')
 const config = require('./utils/config')
 
@@ -14,8 +15,6 @@ app.use('/api/users', usersRouter)
 
 const loginRouter = require('./controllers/login')
 app.use('/api/login', loginRouter)
-
-app.use(cors())
 
 console.log('portti: ', config.port)
 console.log('kanta: ', config.mongoURL)
