@@ -1,4 +1,5 @@
 import React from 'react'
+
 const Blog = ({ blog, likingFunction, deleteFunction, activeUser }) => {
 
   const blogStyle = {
@@ -11,7 +12,7 @@ const Blog = ({ blog, likingFunction, deleteFunction, activeUser }) => {
 
   const addedByThisUser = (blog.user.username === activeUser)
   const removeButtonDisplay = { display: addedByThisUser ? '' : 'none' }
-  
+
   return(
     <div style={blogStyle}>
     {blog.author}

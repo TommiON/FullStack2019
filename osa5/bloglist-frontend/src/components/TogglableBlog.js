@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 
 const TogglableBlog = (props) => {
     const [visible, setVisible] = useState(false)
@@ -17,10 +18,14 @@ const TogglableBlog = (props) => {
           </div>
           <div style={showWhenVisible}>
             <h3 onClick={toggleVisibility}>{props.labelText}</h3>
-            {props.children}      
-          </div>
+            {props.children}
+            </div>
         </div>
       )
+}
+
+TogglableBlog.propTypes = {
+  labelText: PropTypes.string.isRequired
 }
 
 export default TogglableBlog

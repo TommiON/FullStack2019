@@ -37,7 +37,7 @@ const App = () => {
     event.preventDefault()
     try {
       const user = await loginService.login({
-        username, password, 
+        username, password,
       })
       window.localStorage.setItem('loggedInUser', JSON.stringify(user))
       blogService.setToken(user.token)
@@ -47,7 +47,7 @@ const App = () => {
       setStatusMessage(`Kirjattu sisään: ${user.name}`)
       setTimeout(() => {setStatusMessage(null)}, 3000)
     } catch(exception) {
-      setStatusMessage(`Kirjautuminen ei onnistu, luultavasti väärä käyttäjätunnus tai salasana.`)
+      setStatusMessage('Kirjautuminen ei onnistu, luultavasti väärä käyttäjätunnus tai salasana.')
       setTimeout(() => {setStatusMessage(null)}, 3000)
       console.log('Jokin meni vikaan, ehkä väärä salasana. ', exception)
     }
@@ -77,7 +77,7 @@ const App = () => {
   const handleLike = async (blog) => {
     console.log('Tykätty blogista: ', blog.id, blog.title)
     const newLikes = blog.likes + 1
-    const updatedBlog = {...blog, likes: newLikes}
+    const updatedBlog = { ...blog, likes: newLikes }
     await blogService.replace(blog.id, updatedBlog)
     const currentStuff = await blogService.getAll()
     const sorted = currentStuff.sort((a,b) => (a.likes < b.likes) ? 1 : ((b.likes < a.likes) ? -1 : 0))
@@ -92,11 +92,11 @@ const App = () => {
     }
   }
 
-  const Notification = ({viesti}) => {
+  const Notification = ({ viesti }) => {
     const notificationStyle = {
       color: 'green',
       borderStyle: 'solid',
-      background: "lightgrey",
+      background: 'lightgrey',
       borderRadius: 5,
       marginBottom: 10,
       padding: 10
@@ -108,13 +108,13 @@ const App = () => {
       <div style={notificationStyle}>{viesti}</div>
     )
   }
-  
+
   if(user === null) {
     return(
       <form onSubmit={handleLogin}>
         <div>
           Käyttäjätunnus:
-            <input
+          <input
             type="text"
             value={username}
             name="Username"
@@ -123,7 +123,7 @@ const App = () => {
         </div>
         <div>
           Salasana:
-            <input
+          <input
             type="password"
             value={password}
             name="Password"
@@ -142,18 +142,18 @@ const App = () => {
       <form onSubmit={handleLogout}> <button type="submit">Kirjaudu ulos</button></form>
 
       <h2>blogs</h2>
-      
+
       <TogglableForm labelForShow="Lisää blogi" labelForHide="Peruuta blogin lisääminen">
         <AddBlogForm
           handleAdd={handleAdd}
           title={title}
-          handleTitleChange={({target}) => setTitle(target.value)}
+          handleTitleChange={({ target }) => setTitle(target.value)}
           author={author}
-          handleAuthorChange={({target}) => setAuthor(target.value)}
+          handleAuthorChange={({ target }) => setAuthor(target.value)}
           url={url}
-          handleUrlChange={({target}) => setUrl(target.value)} />
+          handleUrlChange={({ target }) => setUrl(target.value)} />
       </TogglableForm>
-      
+
       <p>Klikkaa blogin nimeä, näet tarkemmat tiedot!</p>
 
       {blogs.map(blog =>
