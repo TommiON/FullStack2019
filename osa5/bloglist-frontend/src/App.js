@@ -5,16 +5,23 @@ import loginService from './services/login'
 import AddBlogForm from './components/AddBlogForm'
 import TogglableForm from './components/TogglableForm'
 import TogglableBlog from './components/TogglableBlog'
+import { useField } from './hooks'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  // const [username, setUsername] = useState('')
+  // const [password, setPassword] = useState('')
+  const username = useField('text')
+  const password = useField('password')
+
   const [user, setUser] = useState(null)
 
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
+  const title = useField('text')
+  const author = useField('text')
+  const url = useField('text')
+  // const [title, setTitle] = useState('')
+  // const [author, setAuthor] = useState('')
+  // const [url, setUrl] = useState('')
 
   const [statusMessage, setStatusMessage] = useState(null)
 
@@ -34,16 +41,25 @@ const App = () => {
   }, [])
 
   const handleLogin = async (event) => {
+    console.log('Handle login')
+    console.log('Käyttäjätunnus: ', username.value)
+    console.log(typeof username)
+    console.log('Salasana: ', password.value)
+    console.log(typeof password)
+    console.log(typeof password.value)
     event.preventDefault()
+    const käyttis = username.value
+    const salis = password.value 
     try {
       const user = await loginService.login({
-        username, password,
+        username: username.value, password: password.value,
       })
+      console.log('käyttäjä luotu: ', user)
       window.localStorage.setItem('loggedInUser', JSON.stringify(user))
       blogService.setToken(user.token)
       setUser(user)
-      setUsername('')
-      setPassword('')
+      username.reset()
+      password.reset()
       setStatusMessage(`Kirjattu sisään: ${user.name}`)
       setTimeout(() => {setStatusMessage(null)}, 3000)
     } catch(exception) {
@@ -61,16 +77,19 @@ const App = () => {
   const handleAdd = async (event) => {
     event.preventDefault()
     const newBlog = {
-      title: title,
-      author: author,
-      url: url,
+      title: title.value,
+      author: author.value,
+      url: url.value,
     }
     const response = await blogService.addNew(newBlog)
     setBlogs(blogs.concat(response))
     setStatusMessage(`Lisätty blogi ${title} jonka tekijä on ${author}`)
-    setTitle('')
-    setAuthor('')
-    setUrl('')
+    title.reset()
+    author.reset()
+    url.reset()
+    // setTitle('')
+    // setAuthor('')
+    // setUrl('')
     setTimeout(() => {setStatusMessage(null)}, 3000)
   }
 
@@ -114,21 +133,11 @@ const App = () => {
       <form onSubmit={handleLogin}>
         <div>
           Käyttäjätunnus:
-          <input
-            type="text"
-            value={username}
-            name="Username"
-            onChange={({ target }) => setUsername(target.value)}
-          />
+          <input {...username} reset={null} />
         </div>
         <div>
           Salasana:
-          <input
-            type="password"
-            value={password}
-            name="Password"
-            onChange={({ target }) => setPassword(target.value)}
-          />
+          <input {...password} reset={null}/>
         </div>
         <button type="submit">kirjaudu</button>
       </form>
@@ -146,12 +155,15 @@ const App = () => {
       <TogglableForm labelForShow="Lisää blogi" labelForHide="Peruuta blogin lisääminen">
         <AddBlogForm
           handleAdd={handleAdd}
-          title={title}
-          handleTitleChange={({ target }) => setTitle(target.value)}
-          author={author}
-          handleAuthorChange={({ target }) => setAuthor(target.value)}
-          url={url}
-          handleUrlChange={({ target }) => setUrl(target.value)} />
+          title={title.value}
+          handleTitleChange={title.onChange}
+          reset={null}
+          author={author.value}
+          handleAuthorChange={author.onChange}
+          reset={null}
+          url={url.value}
+          handleUrlChange={url.onChange}
+          reset={null}/>
       </TogglableForm>
 
       <p>Klikkaa blogin nimeä, näet tarkemmat tiedot!</p>

@@ -14,6 +14,7 @@ test('Blogeja ei renderöidä, jos ei ole kirjauduttu', async () => {
     expect(component.container).not.toHaveTextContent('Vielä yksi')
 })
 
+// tämä jälkimmäinen testi ei toimi
 test('Blogit renderöidään, jos on kirjauduttu', async () => {
     const user = {
         username: 'testi',
