@@ -38,7 +38,14 @@ export const addAnecdote = (content) => {
   }
 }
 
-const reducer = (state = initialState, action) => {
+export const initializeAnecdotes = (anecdotes) => {
+  return {
+    type: 'INIT',
+    data: anecdotes
+  }
+}
+
+const reducer = (state = [], action) => {
   console.log('state now: ', state)
   console.log('action', action)
   switch(action.type) {
@@ -51,6 +58,8 @@ const reducer = (state = initialState, action) => {
       )
     case 'ADD_NEW':
       return state.concat(action.data)
+    case 'INIT':
+      return action.data
     default:
       return state
   }

@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { voteFor } from '../reducers/anecdoteReducer'
 import { publishMessage, resetMessage } from '../reducers/notificationReducer'
+import AnecdoteService from '../services/anecdotes'
 
 const AnecdoteList = (props) => {
     
@@ -11,8 +12,9 @@ const AnecdoteList = (props) => {
     //    filteredAnecdotes = anecdotes.filter(a => a.content.includes(props.filter))
     //}
 
-    const vote = (id) => {
+    const vote = async (id) => {
         props.voteFor(id)
+        await AnecdoteService.updateVotes(id)
         const votedAnecdote = props.visibleAnecdotes.find(a => a.id === id)
         const message = 'Voted for "' + votedAnecdote.content + '"'
         props.publishMessage(message)
