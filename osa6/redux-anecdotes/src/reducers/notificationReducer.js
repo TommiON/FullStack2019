@@ -1,3 +1,15 @@
+export const setMessage = (message, duration) => {
+    return async dispatch => {
+        dispatch({
+            type: 'UPDATE',
+            data: message
+        })
+        await setTimeout(() => dispatch({
+            type: 'RESET'
+        }), duration*1000)
+    }
+}
+
 export const publishMessage = (message) => {
     return {
         type: 'UPDATE',

@@ -1,24 +1,19 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { voteFor } from '../reducers/anecdoteReducer'
-import { publishMessage, resetMessage } from '../reducers/notificationReducer'
-import AnecdoteService from '../services/anecdotes'
+import { publishMessage, resetMessage, setMessage } from '../reducers/notificationReducer'
 
 const AnecdoteList = (props) => {
     
-    // const anecdotes = props.anecdotes
-    // var filteredAnecdotes = anecdotes
-    // if( props.filter !== '') {
-    //    filteredAnecdotes = anecdotes.filter(a => a.content.includes(props.filter))
-    //}
-
     const vote = async (id) => {
         props.voteFor(id)
-        await AnecdoteService.updateVotes(id)
         const votedAnecdote = props.visibleAnecdotes.find(a => a.id === id)
-        const message = 'Voted for "' + votedAnecdote.content + '"'
-        props.publishMessage(message)
-        setTimeout(() => props.resetMessage(), 5000)
+
+        const message = 'Voted for "' + votedAnecdote.content + '"'       
+        props.setMessage(message, 3)
+
+        // props.publishMessage(message)
+        // setTimeout(() => props.resetMessage(), 5000)
     }
 
     return(
@@ -49,15 +44,14 @@ const anecdotesToShow = ({ anecdotes, filter }) => {
 const mapStateToProps = (state) => {
     return {
         visibleAnecdotes: anecdotesToShow(state),
-        // anecdotes: state.anecdotes,
-        // filter: state.filter 
     }
 }
 
 const mapDispatchToProps = {
     voteFor,
     publishMessage,
-    resetMessage
+    resetMessage,
+    setMessage
 }
 
 const ConnectedAnecdoteList = connect(mapStateToProps, mapDispatchToProps)(AnecdoteList)

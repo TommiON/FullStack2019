@@ -1,29 +1,19 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { addAnecdote } from '../reducers/anecdoteReducer'
-import { publishMessage, resetMessage } from '../reducers/notificationReducer'
-import AnecdoteService from '../services/anecdotes'
+import { publishMessage, resetMessage, setMessage } from '../reducers/notificationReducer'
 
 const AnecdoteForm = (props) => {
     const add = async (event) => {
         event.preventDefault()
         const anekdootti = event.target.anekdootti.value
-        const addedAnecdote = props.addAnecdote(anekdootti)
-        const toBeAdded = {
-            'content': addedAnecdote.data.content,
-            'id': addedAnecdote.data.id,
-            'votes': addedAnecdote.data.votes,
-        }
-        console.log('to be added: ', toBeAdded)
-        await AnecdoteService.createNew(toBeAdded)
-        // const action = addAnecdote(anekdootti)
-        // props.store.dispatch(action)
-
+        props.addAnecdote(anekdootti)
+        
         const message = 'New anecdote added'
-        props.publishMessage(message)
-        // props.store.dispatch(publishMessage(message))
-        setTimeout(() => props.resetMessage(), 5000)
-        // setTimeout(() => props.store.dispatch(resetMessage()), 5000)
+        props.setMessage(message, 3)
+        
+        // props.publishMessage(message)
+        // setTimeout(() => props.resetMessage(), 5000)
     }
     
     return(
@@ -41,6 +31,7 @@ const mapDispatchToProps = {
     addAnecdote,
     publishMessage,
     resetMessage,
+    setMessage,
 }
 
 const ConnectedAnecdoteForm = connect(null, mapDispatchToProps)(AnecdoteForm)
