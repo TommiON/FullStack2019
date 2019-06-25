@@ -1,2 +1,2 @@
 # FullStack2019
-Full Stack -websovelluskehitys. Kurssin tehtävät.
+University of Helsinki / Full Stack Development course. Repo for course assignments.
