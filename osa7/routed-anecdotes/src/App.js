@@ -61,11 +61,27 @@ const Footer = () => (
   </div>
 )
 
-const CreateNew = (props) => {
+const Notification = ({viesti}) => {
+  const notificationStyle = {
+    color: 'green',
+    borderStyle: 'solid',
+    background: "lightgrey",
+    borderRadius: 5,
+    marginBottom: 10,
+    padding: 10
+  }
+  if(viesti === null) {
+    return null
+  }
+  return(
+    <div style={notificationStyle}>{viesti}</div>
+  )
+}
+
+let CreateNew = (props) => {
   const [content, setContent] = useState('')
   const [author, setAuthor] = useState('')
   const [info, setInfo] = useState('')
-
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -75,6 +91,8 @@ const CreateNew = (props) => {
       info,
       votes: 0
     })
+    props.history.push('/')
+    
   }
 
   return (
@@ -97,8 +115,9 @@ const CreateNew = (props) => {
       </form>
     </div>
   )
-
 }
+
+CreateNew = withRouter(CreateNew)
 
 const App = () => {
   const [anecdotes, setAnecdotes] = useState([
@@ -118,11 +137,13 @@ const App = () => {
     }
   ])
 
-  const [notification, setNotification] = useState('')
+  const [notification, setNotification] = useState(null)
 
   const addNew = (anecdote) => {
     anecdote.id = (Math.random() * 10000).toFixed(0)
     setAnecdotes(anecdotes.concat(anecdote))
+    setNotification(`Added new anecdote: ${anecdote.content}`)
+    setTimeout(() => {setNotification(null)}, 3000)
   }
 
   const anecdoteById = (id) => {
@@ -134,9 +155,7 @@ const App = () => {
       <p>for more info: <a href={anecdote.info}>{anecdote.info}</a></p>
       </div>
     )
-
   }
-    
 
   const vote = (id) => {
     const anecdote = anecdoteById(id)
@@ -155,7 +174,8 @@ const App = () => {
 
   return (
     <div>
-      <h1>Software anecdotes</h1>
+    <Notification viesti={notification} />
+    <h1>Software anecdotes</h1>
     <BrowserRouter>
     <div>
       <div>
