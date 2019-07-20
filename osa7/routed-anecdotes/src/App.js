@@ -34,7 +34,7 @@ const AnecdoteList = ({ anecdotes }) => (
   <div>
     <h2>Anecdotes</h2>
     <ul>
-      {anecdotes.map(anecdote => <li key={anecdote.id} >{anecdote.content}</li>)}
+      {anecdotes.map(anecdote => <Link to={`/anecdotes/${anecdote.id}`} > {anecdote.content} <br></br></Link>)}
     </ul>
   </div>
 )
@@ -125,8 +125,18 @@ const App = () => {
     setAnecdotes(anecdotes.concat(anecdote))
   }
 
-  const anecdoteById = (id) =>
-    anecdotes.find(a => a.id === id)
+  const anecdoteById = (id) => {
+    const anecdote = anecdotes.find(a => a.id === id)
+    return(
+      <div>
+      <h3>"{anecdote.content}" by {anecdote.author} </h3>
+      <p>{anecdote.votes} votes</p>
+      <p>for more info: <a href={anecdote.info}>{anecdote.info}</a></p>
+      </div>
+    )
+
+  }
+    
 
   const vote = (id) => {
     const anecdote = anecdoteById(id)
@@ -156,6 +166,7 @@ const App = () => {
       <Route exact path="/" render={() => <AnecdoteList anecdotes={anecdotes} />} />
       <Route path="/create" render={() => <CreateNew addNew={addNew} />} />
       <Route path="/about" render={() => <About />} />
+      <Route path="/anecdotes/:id" render={ ({match}) => anecdoteById(match.params.id)} />
     </div>
     </BrowserRouter>
       <Footer />
