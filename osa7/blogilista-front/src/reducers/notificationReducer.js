@@ -8,4 +8,17 @@ const notificationReducer = (state = '', action) => {
     return state
 }
 
+export const publishMessage = (message) => {
+    return {
+        type: 'NOTIFY',
+        data: message
+    }
+}
+
+export const wipeMessage = () => {
+    return {
+        type: 'WIPE'
+    }
+}
+
 export default notificationReducer
