@@ -17,6 +17,7 @@ import User from './components/User'
 import { BrowserRouter, Route, Link, Redirect, withRouter } from 'react-router-dom'
 import UserDetails from './components/UserDetails'
 import BlogDetails from './components/BlogDetails'
+import { Table, Alert, Navbar, Nav } from 'react-bootstrap'
 
 const reduuseri = combineReducers({
   notification: notificationReducer,
@@ -152,43 +153,67 @@ const App = () => {
   const byLikes = (b1, b2) => b2.likes - b1.likes
 
   return (
-    <div>
+    <div className="container">
       <BrowserRouter>
         <div>
-          <table><tbody><tr>
-            <th><Link to="/">Blogs</Link></th>
-            <th><Link to="/users">Users</Link></th>
-            <th>{user.name} logged in <button onClick={handleLogout}>logout</button></th>
-            </tr></tbody></table>
+        <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
+        <Nav className="mr-auto">
+            <Nav.Link href="#" as="span">
+              <Link to="/">Blogs</Link>
+            </Nav.Link>
+            <Nav.Link href="#" as="span">
+            <Link to="/users">Users</Link>
+            </Nav.Link>
+            <Nav.Link>
+            {user.name} logged in <button onClick={handleLogout}>logout</button>
+            </Nav.Link>
+        </Nav>
+        </Navbar.Collapse>
+        </Navbar>
+         
           <h2>Blogs App</h2>
-          <Notification notification={Store.getState().notification} />
+          
+          {(Store.getState().notification &&
+            <Alert variant="success">
+              {Store.getState().notification}
+            </Alert>
+          )}
+          
           <Route exact path="/" render={() =>
             <div>
+              <h4>Blogs</h4>
               <Togglable buttonLabel='create new' ref={newBlogRef}>
                 <NewBlog createBlog={createBlog} />
               </Togglable>
 
+              <Table striped><tbody>
               {Store.getState().blogs.sort(byLikes).map(blog =>
-                <div>
+                <tr key={blog.id}><td>
                   <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
-                </div>
+                </td></tr>
               )}
+              </tbody></Table>
             </div>
           } />
+
           <Route exact path="/users" render={() =>
             <div>
-              <h2>Users</h2>
-              <ul>
+              <h4>Users</h4>
+              <Table striped><tbody>
               {users.map(user => 
-                <li key={user.id}>
+                <tr key={user.id}><td>
                   <Link to={`/users/${user.id}`}>{user.name}</Link>, {user.blogs.length} blogs created
-                </li>
+                  </td></tr>
               )}
-              </ul>
+              </tbody></Table>
             </div>} />
+
           <Route exact path="/users/:id" render={({ match }) =>
             <UserDetails user={users.find(u => u.id === match.params.id)} />
           }/>
+
           <Route exact path="/blogs/:id" render={({ match }) =>
             <BlogDetails
               blog={Store.getState().blogs.find(b => b.id === match.params.id)}
@@ -198,6 +223,7 @@ const App = () => {
               creator={Store.getState().blogs.find(b => b.id === match.params.id).user.username === user.username}
               />
           }/>
+
         </div>
       </BrowserRouter>
     </div>

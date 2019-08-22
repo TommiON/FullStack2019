@@ -1,4 +1,5 @@
 import React from 'react'
+import Table from 'react-bootstrap/Table'
 
 const UserDetails = ( {user} ) => {
     if (user === undefined) { 
@@ -8,9 +9,9 @@ const UserDetails = ( {user} ) => {
         <div>
         <h3>{user.name}</h3>
         <h4>added blogs</h4>
-        <ul>
-        {user.blogs.map(b => <li key={b.title}>{b.title}</li>)}
-        </ul> 
+        <Table striped><tbody>
+        {user.blogs.map(b => <tr key={b.title}><td>{b.title}</td></tr>)}
+        </tbody></Table>
         </div>
     )
 }
