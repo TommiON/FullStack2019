@@ -14,6 +14,9 @@ import blogsReducer from './reducers/blogsReducer'
 import { addBlog, setBlogs } from './reducers/blogsReducer'
 import usersService from './services/users'
 import User from './components/User'
+import { BrowserRouter, Route, Link, Redirect, withRouter } from 'react-router-dom'
+import UserDetails from './components/UserDetails'
+import BlogDetails from './components/BlogDetails'
 
 const reduuseri = combineReducers({
   notification: notificationReducer,
@@ -150,31 +153,53 @@ const App = () => {
 
   return (
     <div>
-      <h2>Blogs</h2>
+      <BrowserRouter>
+        <div>
+          <table><tbody><tr>
+            <th><Link to="/">Blogs</Link></th>
+            <th><Link to="/users">Users</Link></th>
+            <th>{user.name} logged in <button onClick={handleLogout}>logout</button></th>
+            </tr></tbody></table>
+          <h2>Blogs App</h2>
+          <Notification notification={Store.getState().notification} />
+          <Route exact path="/" render={() =>
+            <div>
+              <Togglable buttonLabel='create new' ref={newBlogRef}>
+                <NewBlog createBlog={createBlog} />
+              </Togglable>
 
-      <Notification notification={Store.getState().notification} />
-
-      <p>{user.name} logged in</p>
-      <button onClick={handleLogout}>logout</button>
-
-      <Togglable buttonLabel='create new' ref={newBlogRef}>
-        <NewBlog createBlog={createBlog} />
-      </Togglable>
-
-      {Store.getState().blogs.sort(byLikes).map(blog =>
-        <Blog
-          key={blog.id}
-          blog={blog}
-          like={likeBlog}
-          remove={removeBlog}
-          user={user}
-          creator={blog.user.username === user.username}
-        />
-      )}
-
-      <h2>Users</h2>
-      {users.map(user => <User key={user.name} user={user} />)}
-      
+              {Store.getState().blogs.sort(byLikes).map(blog =>
+                <div>
+                  <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+                </div>
+              )}
+            </div>
+          } />
+          <Route exact path="/users" render={() =>
+            <div>
+              <h2>Users</h2>
+              <ul>
+              {users.map(user => 
+                <li key={user.id}>
+                  <Link to={`/users/${user.id}`}>{user.name}</Link>, {user.blogs.length} blogs created
+                </li>
+              )}
+              </ul>
+            </div>} />
+          <Route exact path="/users/:id" render={({ match }) =>
+            <UserDetails user={users.find(u => u.id === match.params.id)} />
+          }/>
+          <Route exact path="/blogs/:id" render={({ match }) =>
+            <BlogDetails
+              blog={Store.getState().blogs.find(b => b.id === match.params.id)}
+              like={likeBlog}
+              remove={removeBlog}
+              user={user}
+              creator={Store.getState().blogs.find(b => b.id === match.params.id).user.username === user.username}
+              />
+          }/>
+        </div>
+      </BrowserRouter>
     </div>
   )
 }

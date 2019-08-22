@@ -36,4 +36,14 @@ usersRouter.post('/', async (request, response, next) => {
   }
 })
 
+usersRouter.get('/:id', async (request, response) => {
+  const id = request.params.id
+  try {
+    const user = await User.findById(id)
+    response.json(user)
+  } catch (exception) {
+    response.send('ei löydy!')
+  }
+})
+
 module.exports = usersRouter
