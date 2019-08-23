@@ -220,7 +220,8 @@ const App = () => {
               like={likeBlog}
               remove={removeBlog}
               user={user}
-              creator={Store.getState().blogs.find(b => b.id === match.params.id).user.username === user.username}
+              creator = {true}
+              store = {Store}
               />
           }/>
 

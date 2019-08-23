@@ -76,4 +76,14 @@ router.delete('/:id', async (request, response) => {
   }
 })
 
+router.put('/:id/comments', async (request, response) => {
+  const id = request.params.id
+  const comment = request.body.comment
+  const originalBlog = await Blog.findById(id)
+  originalBlog.comments = originalBlog.comments.concat(comment)
+  const updatedBlog = await Blog
+  .findByIdAndUpdate(id, originalBlog, { new: true })
+  response.json(updatedBlog.toJSON())
+})
+
 module.exports = router
