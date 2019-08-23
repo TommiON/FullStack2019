@@ -7,7 +7,7 @@ const BlogDetails = ({ blog, like, remove, creator, store }) => {
     }
     return(
         <div>
-        <h3>{blog.title}</h3>
+        <h3> {blog.title} </h3>
         <a href={blog.url}>{blog.url}</a>
         <div>{blog.likes} likes
         <button onClick={() => like(blog)}>like</button>

@@ -18,6 +18,7 @@ import { BrowserRouter, Route, Link, Redirect, withRouter } from 'react-router-d
 import UserDetails from './components/UserDetails'
 import BlogDetails from './components/BlogDetails'
 import { Table, Alert, Navbar, Nav } from 'react-bootstrap'
+import Page from './stylings/styles'
 
 const reduuseri = combineReducers({
   notification: notificationReducer,
@@ -153,6 +154,7 @@ const App = () => {
   const byLikes = (b1, b2) => b2.likes - b1.likes
 
   return (
+    <Page>
     <div className="container">
       <BrowserRouter>
         <div>
@@ -228,6 +230,7 @@ const App = () => {
         </div>
       </BrowserRouter>
     </div>
+    </Page>
   )
 }
 
