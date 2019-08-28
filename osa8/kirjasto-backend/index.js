@@ -1,4 +1,5 @@
 const { ApolloServer, gql } = require('apollo-server')
+const uuid = require('uuid/v1')
 
 let authors = [
   {
@@ -104,8 +105,21 @@ const typeDefs = gql`
     hello: String!
     bookCount: String
     authorCount: String
-    allBooks(author: String): [Book!]!
+    allBooks(author: String, genre: String): [Book!]!
     allAuthors: [Author!]!
+  }
+
+  type Mutation {
+    addBook(
+      title: String!
+      published: Int!
+      author: String!
+      genres: [String!]
+    ): Book
+    editAuthor(
+      name: String!
+      setBornTo: Int!
+    ): Author
   }
 `
 
@@ -115,11 +129,14 @@ const resolvers = {
     bookCount: () => { return books.length },
     authorCount: () => { return authors.length },
     allBooks: (root, args) => {
-      if(args.author === undefined) {
-        return books
-      } else {
-        return books.filter(b => b.author === args.author)
+      var toBeReturned = books
+      if(args.author !== undefined) {
+        toBeReturned = toBeReturned.filter(book => book.author === args.author)
       }
+      if(args.genre !== undefined) {
+        toBeReturned = toBeReturned.filter(book => book.genres.includes(args.genre))
+      }
+      return toBeReturned
     },
     allAuthors: () =>  { return authors }
   },
@@ -127,6 +144,28 @@ const resolvers = {
   Author: {
     bookCount: (root) => {
       return books.filter(b => b.author === root.name).length
+    }
+  },
+
+  Mutation: {
+    addBook: (root, args) => {
+      const newBook = { ...args, id: uuid() }
+      books = books.concat(newBook)
+      var authorOfThis = authors.find(author => author.name === args.author)
+      if(authorOfThis === undefined) {
+        authorOfThis = { name: args.author, born: null, id: uuid() }
+        authors = authors.concat(authorOfThis)
+      }
+      return newBook
+    },
+    editAuthor: (root, args) => {
+      const author = authors.find(a => a.name === args.name)
+      if(author === undefined) {
+        return null
+      }
+      const index = authors.findIndex(a => a.name === args.name)
+      authors[index].born = args.setBornTo
+      return author
     }
   }
 }
