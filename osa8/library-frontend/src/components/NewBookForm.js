@@ -17,7 +17,6 @@ const NewBookForm = (props) => {
     await props.addBook({
         variables: { title, published, author, genres }
     })
-    console.log('ollaanko vielä täällä')
     setTitle('')
     setPublished('')
     setAuhtor('')
