@@ -89,6 +89,7 @@ const resolvers = {
     },
     
     allBooks: async (root, args) => {
+      console.log('backend, allBooks...')
       let toBeReturned = await Book.find({}).populate('author')
       if(args.author !== undefined) {
         toBeReturned = toBeReturned.filter(book => book.author.name === args.author)
@@ -100,6 +101,7 @@ const resolvers = {
     },
 
     allAuthors: () =>  {
+      console.log('backend, allAuthors...')
       return Author.find({})
     },
 
@@ -118,8 +120,10 @@ const resolvers = {
 
   Mutation: {
     addBook: async (root, args, context) => {
+      console.log('backend, addBook...')
       // tunnistautuminen...
       const currentUser = context.currentUser
+      console.log('current user: ', currentUser)
       if(!currentUser) {
         throw new AuthenticationError("Not authenticated")
       }
@@ -143,9 +147,12 @@ const resolvers = {
     },
 
     editAuthor: async (root, args, context) => {
+      console.log('backend, editAuthor')
       // tunnistautuminen...
       const currentUser = context.currentUser
+      console.log('current user: ', currentUser)
       if(!currentUser) {
+        console.log('Ei oikeutta muuttaa tietoja!')
         throw new AuthenticationError("Not authenticated")
       }
 
@@ -187,9 +194,9 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: async ({ req }) => {
-    console.log('***context***')
+    // console.log('***context***')
     const auth = req ? req.headers.authorization : null
-    console.log('auth: ', auth)
+    // console.log('auth: ', auth)
     if (auth && auth.toLowerCase().startsWith('bearer ')) {
       const decodedToken = jwt.verify(
         auth.substring(7), JWT_SECRET

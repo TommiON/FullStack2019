@@ -1,7 +1,6 @@
-import React, { useState } from 'react'
-import ApolloClient, { gql } from 'apollo-boost'
-import { Query, Mutation } from 'react-apollo'
-import BirthYearForm from './BirthYearForm'
+import React from 'react'
+import { gql } from 'apollo-boost'
+import { Query } from 'react-apollo'
 import BirthYearChange from './BirthYearChange'
 
 const Authors = (props) => {
@@ -9,9 +8,11 @@ const Authors = (props) => {
     return null
   }
 
+  /*
   const client = new ApolloClient({
     uri: 'http://localhost:4000/graphql'
   })
+  */
 
   const ALL_AUTHORS = gql`
   {

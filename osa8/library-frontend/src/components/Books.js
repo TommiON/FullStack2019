@@ -1,5 +1,5 @@
 import React from 'react'
-import ApolloClient, { gql } from 'apollo-boost'
+import { gql } from 'apollo-boost'
 import { Query } from 'react-apollo'
 
 const Books = (props) => {
@@ -7,26 +7,30 @@ const Books = (props) => {
     return null
   }
 
+  /*
   const client = new ApolloClient({
     uri: 'http://localhost:4000/graphql'
   })
+  */
 
   const ALL_BOOKS = gql`
   {
     allBooks{
       title
       published
-      author
+      author{name}
     }
   }
   `
 
+  /*
   client.query({ query: ALL_BOOKS })
     .then((response) => {
       console.log('kannasta löytyy: ', response.data)
   })
+  */
 
-  const books = []
+  // const books = []
 
   return(
     <Query query={ALL_BOOKS} pollInterval={2000}>
@@ -48,7 +52,7 @@ const Books = (props) => {
                 <tr key={b.title}>
                   <td>{b.title}</td>
                   <td>{b.published}</td>
-                  <td>{b.author}</td>
+                  <td>{b.author.name}</td>
                 </tr>
                 )}
             </tbody>

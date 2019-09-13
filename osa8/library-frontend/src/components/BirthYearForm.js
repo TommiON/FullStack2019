@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import ApolloClient, { gql } from 'apollo-boost'
-import { Query, Mutation } from 'react-apollo'
+// import { Query, Mutation } from 'react-apollo'
 
 const BirthYearForm = (props) => {
     const[name, setName] = useState('')
@@ -54,7 +54,7 @@ const BirthYearForm = (props) => {
             
             <form onSubmit={submit}>
                 <div>born
-                <input value={born} onChange={({ target}) => setBirthYear(target.value)} />
+                <input value={born} onChange={({ target}) => setBirthYear(Number(target.value))} />
                 </div>
                 <button type='submit'>Set year</button>
             </form>
