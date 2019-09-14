@@ -39,7 +39,7 @@ const BirthYearForm = (props) => {
     
     return(
         <div>
-            <h2>Set birthyear</h2>
+            <h4>Set birth year</h4>
             <form onSubmit={changeSelected}>
                     <label>
                         Choose author: 

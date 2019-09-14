@@ -14,6 +14,7 @@ const NewBookForm = (props) => {
   const submit = async (e) => {
     e.preventDefault()
     console.log('nyt yritetään lisätä...')
+    console.log('genres: ', genres)
     await props.addBook({
         variables: { title, published, author, genres }
     })

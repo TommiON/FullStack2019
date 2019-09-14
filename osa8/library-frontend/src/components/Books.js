@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { gql } from 'apollo-boost'
 import { Query } from 'react-apollo'
+import GenreFilter from './GenreFilter'
 
 const Books = (props) => {
+  const [filter, setFilter] = useState('')
+
   if (!props.show) {
     return null
   }
@@ -19,6 +22,7 @@ const Books = (props) => {
       title
       published
       author{name}
+      genres
     }
   }
   `
@@ -33,6 +37,7 @@ const Books = (props) => {
   // const books = []
 
   return(
+    <div>
     <Query query={ALL_BOOKS} pollInterval={2000}>
       {(result) =>{
         if(result.loading) {
@@ -47,20 +52,27 @@ const Books = (props) => {
                 <th></th>
                 <th>published</th>
                 <th>author</th>
+                <th>genres</th>
               </tr>
-              {result.data.allBooks.map(b =>
-                <tr key={b.title}>
+              {result.data.allBooks
+                .filter(b => b.genres.includes(filter) || filter === '')
+                .map(b => 
+                  <tr key={b.title}>
                   <td>{b.title}</td>
                   <td>{b.published}</td>
                   <td>{b.author.name}</td>
-                </tr>
-                )}
+                  <td>{b.genres}</td>
+                  </tr>
+                )
+              }
             </tbody>
           </table>
           </div>
         )
       }}
     </Query>
+    <GenreFilter setFilter={setFilter} />
+    </div>
   )
 }
 

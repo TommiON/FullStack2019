@@ -95,6 +95,7 @@ const resolvers = {
         toBeReturned = toBeReturned.filter(book => book.author.name === args.author)
       }
       if(args.genre !== undefined) {
+        console.log('select by genre: ', args.genre)
         toBeReturned = toBeReturned.filter(book => book.genres.includes(args.genre))
       }
       return toBeReturned
@@ -142,7 +143,12 @@ const resolvers = {
         authorOfThis = new Author({name: args.author})
         authorOfThis.save()
       }
-      const book = new Book({title: args.title, author: authorOfThis, published: args.published, genres: args.genres})
+      let g = []
+      if(args.genres !== null) {
+        g = args.genres
+      }
+      const book = new Book({title: args.title, author: authorOfThis, published: args.published, genres: g})
+      console.log('uusi kirja: ', book)
       return book.save()
     },
 
