@@ -8,6 +8,9 @@ const User = require('./models/user')
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 
+const { PubSub } = require('apollo-server')
+const pubsub = new PubSub()
+
 const JWT_SECRET = 'NEED_HERE_A_SECRET_KEY'
 
 mongoose.connect('mongodb+srv://testi2:testi2@cluster0-1cspe.mongodb.net/test?retryWrites=true', { useNewUrlParser: true })
@@ -36,7 +39,7 @@ const typeDefs = gql`
 
   type User {
     username: String!
-    favoriteGenre: String!
+    favoriteGenre: String
     id: ID!
   }
 
@@ -66,11 +69,16 @@ const typeDefs = gql`
     ): Author
     createUser(
       username: String!
+      favoriteGenre: String
     ): User
     login(
       username: String!
       password: String!
     ): Token
+  }
+
+  type Subscription {
+    bookAdded: Book!
   }
 `
 
@@ -108,6 +116,8 @@ const resolvers = {
 
     me: (root, args, context) => {
       console.log('**me** ', context.currentUser )
+      console.log('suosikkigenre: ', context.currentUser.favoriteGenre)
+      console.log('käyttäjänimi: ', context.currentUser.username)
       return context.currentUser
     }
   },
@@ -143,12 +153,12 @@ const resolvers = {
         authorOfThis = new Author({name: args.author})
         authorOfThis.save()
       }
-      let g = []
-      if(args.genres !== null) {
-        g = args.genres
-      }
-      const book = new Book({title: args.title, author: authorOfThis, published: args.published, genres: g})
+      
+      const book = new Book({title: args.title, author: authorOfThis, published: args.published, genres: args.genres})
       console.log('uusi kirja: ', book)
+
+      pubsub.publish('BOOK_ADDED', { bookAdded: book })
+
       return book.save()
     },
 
@@ -171,7 +181,7 @@ const resolvers = {
 
     createUser: (root, args) => {
       console.log('***createUser***')
-      const user = new User({ username: args.username, favoriteGenre: 'x' })
+      const user = new User({ username: args.username, favoriteGenre: 'vittu' })
       console.log('user: ', user)
       return user.save()
       
@@ -194,6 +204,12 @@ const resolvers = {
       return { value: jwt.sign(userForToken, JWT_SECRET)}
     },
   },
+
+  Subscription: {
+    bookAdded: {
+      subscribe: () => pubsub.asyncIterator(['BOOK_ADDED'])
+    },
+  },
 }
 
 const server = new ApolloServer({
@@ -206,13 +222,14 @@ const server = new ApolloServer({
     if (auth && auth.toLowerCase().startsWith('bearer ')) {
       const decodedToken = jwt.verify(
         auth.substring(7), JWT_SECRET
-      )
+      ) 
       const currentUser = await User.findById(decodedToken.id)
       return { currentUser }
     }
   }
 })
 
-server.listen().then(({ url }) => {
+server.listen().then(({ url, subscriptionsUrl }) => {
   console.log(`Server ready at ${url}`)
+  console.log(`Subscriptions ready at ${subscriptionsUrl}`)
 })
