@@ -23,3 +23,4 @@ const calculateBmi = (height: number, mass: number) : BMICategory => {
 }
 
 console.log(calculateBmi(180, 74))
+
