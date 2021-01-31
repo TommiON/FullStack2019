@@ -11,19 +11,50 @@ interface ExerciseResult {
     ratingDescription: RatingDescription
 }
 
-const calculateExercises = (hours: Array<number>, target: number): ExerciseResult => {
-    const totalDays = hours.length
-    const daysWithExercise = (hours.filter(h => h > 0)).length
-    const totalHours = hours.reduce((accumulator, current) => accumulator + current)
+interface ExerciseParameters {
+    target: number
+    hours: Array<number>
+}
+
+const parseExerciseArguments = (args: Array<string>) : ExerciseParameters => {
+    if (args.length < 4) throw new Error('Not enough arguments');
+
+    let target: number
+    if (!isNaN(Number(args[2]))) {
+        target = Number(args[2])
+    } else {
+        throw new Error('Target hours parameter not a number!');
+    }
+
+    let hoursArgs = args.slice(3)
+    let hours: Array<number> = []
+    hoursArgs.forEach((h) => {
+        if (!isNaN(Number(h))) {
+            hours.push(Number(h))
+        } else {
+            throw new Error('Non-number detected in exercise hours parameters!');
+        }
+    })
+
+    return {
+        target: target,
+        hours: hours
+    }
+}
+
+const calculateExercises = (params: ExerciseParameters): ExerciseResult => {
+    const totalDays = params.hours.length
+    const daysWithExercise = (params.hours.filter(h => h > 0)).length
+    const totalHours = params.hours.reduce((accumulator, current) => accumulator + current)
     const averageHours = totalHours / totalDays
-    const actualAtLeastTarget = averageHours >= target
+    const actualAtLeastTarget = averageHours >= params.target
 
     let ratingValue: RatingValue, ratingText: RatingDescription
 
-    if(averageHours/target > 1.1) {
+    if(averageHours/params.target > 1.1) {
         ratingValue = 3
         ratingText = 'Excellent'
-    } else if(averageHours/target <= 1.1 && averageHours/target > 0.9) {
+    } else if(averageHours/params.target <= 1.1 && averageHours/params.target > 0.9) {
         ratingValue = 2
         ratingText = 'OK'
     } else {
@@ -34,7 +65,7 @@ const calculateExercises = (hours: Array<number>, target: number): ExerciseResul
     return {
         periodLength: totalDays,
         trainingDays: daysWithExercise,
-        target: target,
+        target: params.target,
         average: averageHours,
         success: actualAtLeastTarget,
         rating: ratingValue,
@@ -43,5 +74,9 @@ const calculateExercises = (hours: Array<number>, target: number): ExerciseResul
 
 }
 
-const hours = [0,2,5,0,3]
-console.log(calculateExercises(hours, 1))
+try {
+    const params = parseExerciseArguments(process.argv);
+    console.log(calculateExercises(params))
+  } catch (e) {
+    console.log('ERROR! ', e.message);
+}
