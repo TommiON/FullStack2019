@@ -41,6 +41,8 @@ const calculateBmi = (params: BodyParameters) : BMICategory => {
     if(bmi > 35 && bmi <= 40)   return 'Obese Class II (Severely obese)';
     if(bmi > 40)                return 'Obese Class III (Very severely obese)';
 
+    return 'Normal (healthy weight)';
+
 }
 
 try {
