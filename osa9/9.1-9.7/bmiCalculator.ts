@@ -1,4 +1,4 @@
-type BMICategory = 
+export type BMICategory = 
     'Very severely underweight' |
     'Severely underweight' |
     'Underweight' |
@@ -8,12 +8,12 @@ type BMICategory =
     'Obese Class II (Severely obese)' |
     'Obese Class III (Very severely obese)';
 
-interface BodyParameters {
+export interface BodyParameters {
     heigth: number;
     mass: number;
 }
 
-const parseBodyArguments = (args: Array<string>) : BodyParameters => {
+export const parseBodyArguments = (args: Array<string>) : BodyParameters => {
     if (args.length < 4) throw new Error('Not enough arguments');
     if (args.length > 4) throw new Error('Too many arguments');
 
@@ -27,7 +27,7 @@ const parseBodyArguments = (args: Array<string>) : BodyParameters => {
       }
 }
     
-const calculateBmi = (params: BodyParameters) : BMICategory => {
+export const calculateBmi = (params: BodyParameters) : BMICategory => {
     const height = params.heigth;
     const mass = params.mass
     const bmi = mass / ((height/100) * (height/100));
