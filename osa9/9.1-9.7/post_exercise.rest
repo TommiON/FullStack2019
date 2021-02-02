@@ -4,5 +4,5 @@ content-type: application/json
     
 {
     "dailyExercises": [1,2,3],
-    "target": 'x'
+    "target": 7
 }

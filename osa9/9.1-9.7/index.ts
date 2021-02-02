@@ -52,7 +52,7 @@ app.post('/exercises', (req, res) => {
                 error: "malformatted parameters"
               });
         }
-    })
+    });
     
     const params: ExerciseParameters = {
         target: req.body.target,
