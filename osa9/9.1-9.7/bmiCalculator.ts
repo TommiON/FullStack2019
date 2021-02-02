@@ -21,15 +21,15 @@ export const parseBodyArguments = (args: Array<string>) : BodyParameters => {
         return {
           heigth: Number(args[2]),
           mass: Number(args[3])
-        }
+        };
       } else {
         throw new Error('Provided values were not numbers!');
       }
-}
+};
     
 export const calculateBmi = (params: BodyParameters) : BMICategory => {
     const height = params.heigth;
-    const mass = params.mass
+    const mass = params.mass;
     const bmi = mass / ((height/100) * (height/100));
    
     if(bmi <= 15)               return 'Very severely underweight';
@@ -43,12 +43,12 @@ export const calculateBmi = (params: BodyParameters) : BMICategory => {
 
     return 'Normal (healthy weight)';
 
-}
+};
 
 try {
     const params = parseBodyArguments(process.argv);
-    console.log(calculateBmi(params))
+    console.log(calculateBmi(params));
   } catch (e) {
-    console.log('Error: ', e.message);
+    console.log('Error: ', e);
   }
 
