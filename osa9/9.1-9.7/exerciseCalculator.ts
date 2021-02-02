@@ -1,7 +1,7 @@
 type RatingValue = 1 | 2 | 3;
 type RatingDescription = 'Excellent' | 'OK' | 'Should do better';
 
-interface ExerciseResult {
+export interface ExerciseResult {
     periodLength: number
     trainingDays: number
     target: number
@@ -11,7 +11,7 @@ interface ExerciseResult {
     ratingDescription: RatingDescription
 }
 
-interface ExerciseParameters {
+export interface ExerciseParameters {
     target: number
     hours: Array<number>
 }
@@ -42,7 +42,7 @@ const parseExerciseArguments = (args: Array<string>) : ExerciseParameters => {
     };
 };
 
-const calculateExercises = (params: ExerciseParameters): ExerciseResult => {
+export const calculateExercises = (params: ExerciseParameters): ExerciseResult => {
     const totalDays = params.hours.length;
     const daysWithExercise = (params.hours.filter(h => h > 0)).length;
     const totalHours = params.hours.reduce((accumulator, current) => accumulator + current);
