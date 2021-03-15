@@ -1,5 +1,5 @@
 import patientData from '../../data/patients.json';
-import {Patient} from '../types/types';
+import {Patient, NewPatient} from '../types/types';
 import {v1 as uuid} from 'uuid';
 const id = uuid();
 
@@ -14,15 +14,15 @@ const getEntries = ():Omit<Patient, 'ssn'>[] => {
     );
 }
 
-const addEntry = (name: string, dateOfBirth: string, ssn: string, gender: string, occupation: string) => {
+const addEntry = (entry: NewPatient): Patient => {
+    const d = '123';
+    const s = '666';
     const patient = {
         id: id,
-        name: name,
-        dateOfBirth: dateOfBirth,
-        ssn: ssn,
-        gender: gender,
-        occupation: occupation
-    }
+        dateOfBirth: d,
+        ssn: s,
+        ...entry
+    };
     patientData.push(patient);
     console.log('uusi potilas: ', patient);
     return patient;
