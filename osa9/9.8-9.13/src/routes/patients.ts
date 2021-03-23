@@ -20,4 +20,9 @@ router.post('/', (req, res) => {
     }
 });
 
+router.get('/:id', (req, res) => {
+    const response = patientService.getOneEntry(req.params.id);
+    res.send(response);
+});
+
 export default router;

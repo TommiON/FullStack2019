@@ -1,9 +1,9 @@
 import patientData from '../../data/patients.json';
-import {Patient, NewPatient} from '../types/types';
+import {Patient, NewPatient, PublicPatient} from '../types/types';
 import {v1 as uuid} from 'uuid';
 const id = uuid();
 
-const getEntries = ():Omit<Patient, 'ssn'>[] => {
+const getEntries = ():PublicPatient[] => {
     return patientData.map(({id, name, occupation, gender, dateOfBirth}) => ({
             id,
             name,
@@ -15,8 +15,14 @@ const getEntries = ():Omit<Patient, 'ssn'>[] => {
 }
 
 const addEntry = (entry: NewPatient): Patient => {
-    const d = '123';
-    const s = '666';
+    let d = '123';
+    if(entry.dateOfBirth !== undefined) {
+        d = entry.dateOfBirth;
+    }
+    let s = '666';
+    if(entry.ssn !== undefined) {
+        s = entry.ssn;
+    }
     const patient = {
         id: id,
         dateOfBirth: d,
@@ -28,4 +34,8 @@ const addEntry = (entry: NewPatient): Patient => {
     return patient;
 }
 
-export default {getEntries, addEntry};
+const getOneEntry = (id: string): PublicPatient|undefined => {
+    return patientData.find(p => p.id === id);
+}
+
+export default {getEntries, addEntry, getOneEntry};
