@@ -9,7 +9,8 @@ const getEntries = ():PublicPatient[] => {
             name,
             occupation,
             gender,
-            dateOfBirth
+            dateOfBirth,
+            entries: []
         })
     );
 }
@@ -34,8 +35,14 @@ const addEntry = (entry: NewPatient): Patient => {
     return patient;
 }
 
-const getOneEntry = (id: string): PublicPatient|undefined => {
-    return patientData.find(p => p.id === id);
+const getOneEntry = (id: string): Patient|undefined => {
+    let patient = patientData.find(p => p.id === id);
+    let response;
+    if(patient !== undefined) {
+        response = {...patient, entries: []}
+    }
+    console.log('***', response);
+    return response;
 }
 
 export default {getEntries, addEntry, getOneEntry};

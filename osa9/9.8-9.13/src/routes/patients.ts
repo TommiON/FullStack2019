@@ -22,6 +22,7 @@ router.post('/', (req, res) => {
 
 router.get('/:id', (req, res) => {
     const response = patientService.getOneEntry(req.params.id);
+    console.log('Potilas: ', response)
     res.send(response);
 });
 
