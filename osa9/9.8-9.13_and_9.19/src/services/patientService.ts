@@ -1,16 +1,17 @@
-import patientData from '../../data/patients.json';
+// import patientData from '../../data/patients.json';
+import patientData from '../../data/patients';
 import {Patient, NewPatient, PublicPatient} from '../types/types';
 import {v1 as uuid} from 'uuid';
 const id = uuid();
 
 const getEntries = ():PublicPatient[] => {
-    return patientData.map(({id, name, occupation, gender, dateOfBirth}) => ({
+    return patientData.map(({id, name, occupation, gender, dateOfBirth, entries}) => ({
             id,
             name,
             occupation,
             gender,
             dateOfBirth,
-            entries: []
+            entries: entries
         })
     );
 }
@@ -39,7 +40,7 @@ const getOneEntry = (id: string): Patient|undefined => {
     let patient = patientData.find(p => p.id === id);
     let response;
     if(patient !== undefined) {
-        response = {...patient, entries: []}
+        response = {...patient}
     }
     console.log('***', response);
     return response;
