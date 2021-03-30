@@ -16,11 +16,23 @@ const PatientDetailsPage = () => {
 
     return(
         <div>
+            {console.log('frontin patient', patient)}
             <h1>{patient.name}</h1>
             <p>ssn: {patient.ssn}</p> 
             <p>gender: {patient.gender}</p>
             <p>date of birth: {patient.dateOfBirth}</p>
             <p>occupation: {patient.occupation}</p>
+            <h3>Entries</h3>
+            {patient.entries.map(e => 
+                <div key={e.id}>
+                    {e.date} {e.description}
+                    {(e.type === 'OccupationalHealthcare'|| e.type ==='Hospital')
+                        ? 
+                            <div>{e.diagnosisCodes?.map(d => <i key={d}>{d}<br></br></i>)}</div> 
+                        : 
+                            <p></p>}
+                </div>
+            )}
         </div>
         
     )
