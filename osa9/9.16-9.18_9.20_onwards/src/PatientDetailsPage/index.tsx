@@ -3,10 +3,11 @@ import { useStateValue } from "../state";
 import { Patient } from "../types";
 
 import {useParams} from "react-router-dom";
+import { prependOnceListener } from "process";
 
 const PatientDetailsPage = () => {
 
-    const [{ patients }, dispatch] = useStateValue();
+    const [{ patients, diagnoses }, dispatch] = useStateValue();
     const { id } = useParams<{ id: string }>();
     const patient: Patient | undefined = Object.values(patients).find(p => p.id === id);
 
@@ -14,9 +15,21 @@ const PatientDetailsPage = () => {
         return <p>No such patient...</p>
     }
 
+    const DiagnosisDetails = ({code}: {code: string}) => {
+        const diag = diagnoses[code];
+        console.log('** DIAGNOOSI', diag, typeof(diag))
+        if(diag !== undefined) {
+            return(
+                <p>{code} {diag.name}</p>
+            )
+        } else {
+            return <div></div>
+        }
+        
+    }
+
     return(
         <div>
-            {console.log('frontin patient', patient)}
             <h1>{patient.name}</h1>
             <p>ssn: {patient.ssn}</p> 
             <p>gender: {patient.gender}</p>
@@ -28,7 +41,14 @@ const PatientDetailsPage = () => {
                     {e.date} {e.description}
                     {(e.type === 'OccupationalHealthcare'|| e.type ==='Hospital')
                         ? 
-                            <div>{e.diagnosisCodes?.map(d => <i key={d}>{d}<br></br></i>)}</div> 
+                            <div>
+                                <ul>
+                                {e.diagnosisCodes?.map(d =>
+                                    <li key={d}><DiagnosisDetails code={d} /></li>
+                                )}
+                                </ul>
+                                
+                            </div> 
                         : 
                             <p></p>}
                 </div>
@@ -37,6 +57,8 @@ const PatientDetailsPage = () => {
         
     )
 }
+
+
 
 export default PatientDetailsPage;
 

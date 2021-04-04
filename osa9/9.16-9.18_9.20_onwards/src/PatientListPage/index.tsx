@@ -12,7 +12,7 @@ import { useStateValue } from "../state";
 import {addPatient} from '../state/reducer';
 
 const PatientListPage: React.FC = () => {
-  const [{ patients }, dispatch] = useStateValue();
+  const [{ patients, diagnoses }, dispatch] = useStateValue();
 
   const [modalOpen, setModalOpen] = React.useState<boolean>(false);
   const [error, setError] = React.useState<string | undefined>();
@@ -39,11 +39,8 @@ const PatientListPage: React.FC = () => {
     }
   };
 
-  const showIndividualPatient = (id: string) => {
-    console.log('Näytetään yksittäinen ', id);
-  }
-
   return (
+    
     <div className="App">
       <Container textAlign="center">
         <h3>Patient list</h3>
