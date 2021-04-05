@@ -5,7 +5,10 @@ import { Patient } from "../types";
 import {useParams} from "react-router-dom";
 import { prependOnceListener } from "process";
 
-const PatientDetailsPage = () => {
+import DiagnosisDetails from './DiagnosisDetails'
+import EntryDetails from './EntryDetails'
+
+const PatientDetailsPage: React.FC = () => {
 
     const [{ patients, diagnoses }, dispatch] = useStateValue();
     const { id } = useParams<{ id: string }>();
@@ -15,6 +18,7 @@ const PatientDetailsPage = () => {
         return <p>No such patient...</p>
     }
 
+    /*
     const DiagnosisDetails = ({code}: {code: string}) => {
         const diag = diagnoses[code];
         console.log('** DIAGNOOSI', diag, typeof(diag))
@@ -27,6 +31,7 @@ const PatientDetailsPage = () => {
         }
         
     }
+    */
 
     return(
         <div>
@@ -36,23 +41,7 @@ const PatientDetailsPage = () => {
             <p>date of birth: {patient.dateOfBirth}</p>
             <p>occupation: {patient.occupation}</p>
             <h3>Entries</h3>
-            {patient.entries.map(e => 
-                <div key={e.id}>
-                    {e.date} {e.description}
-                    {(e.type === 'OccupationalHealthcare'|| e.type ==='Hospital')
-                        ? 
-                            <div>
-                                <ul>
-                                {e.diagnosisCodes?.map(d =>
-                                    <li key={d}><DiagnosisDetails code={d} /></li>
-                                )}
-                                </ul>
-                                
-                            </div> 
-                        : 
-                            <p></p>}
-                </div>
-            )}
+            {patient.entries.map(e => <EntryDetails entry={e} />)}
         </div>
         
     )
