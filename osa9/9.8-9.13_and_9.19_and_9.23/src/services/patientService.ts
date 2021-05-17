@@ -1,6 +1,6 @@
 // import patientData from '../../data/patients.json';
 import patientData from '../../data/patients';
-import {Patient, NewPatient, PublicPatient} from '../types/types';
+import {Patient, NewPatient, PublicPatient, Entry} from '../types/types';
 import {v1 as uuid} from 'uuid';
 const id = uuid();
 
@@ -46,4 +46,28 @@ const getOneEntry = (id: string): Patient|undefined => {
     return response;
 }
 
-export default {getEntries, addEntry, getOneEntry};
+const addEntryForPatient = (patientId: string, entry: Entry): Patient|undefined => {
+    const patient = patientData.find(p => p.id === patientId);
+    if(patient === undefined) {
+        return undefined;
+    }
+
+    const updatedEntries = patient.entries.concat(entry);
+
+    const updatedPatient: Patient = {
+        ...patient,
+        entries: updatedEntries,
+    }
+
+    let index = patientData.findIndex(element => element.id == patientId);
+    console.log('indeksi: ', index);
+
+    patientData[index] = updatedPatient;
+
+    console.log('*** Päivitetty potilas: ', updatedPatient);
+    console.log('*** addEntryForPatient, patientData: ', patientData);
+
+    return updatedPatient;
+}
+
+export default {getEntries, addEntry, getOneEntry, addEntryForPatient};

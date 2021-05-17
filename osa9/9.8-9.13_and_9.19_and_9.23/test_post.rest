@@ -1,0 +1,10 @@
+POST http://localhost:3001/api/patients/d2773336-f723-11e9-8f0b-362b9e155667/entries
+content-type: application/json
+
+{
+    "id": "1004",
+    "date": "nyt",
+    "specialist": "mä",
+    "description": "kipee",
+    "diagnosisCodes": ["yks", "kaks"]
+}

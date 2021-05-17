@@ -62,6 +62,8 @@ interface HospitalEntry extends EntryBase {
 
 export type Entry = OccupationalHealthCareEntry | HealthCheckEntry | HospitalEntry;
 
+export type NewEntry = Omit<Entry, 'id'>;
+
 export type PublicPatient = Patient;
 
 //export type PublicPatient = Omit<Patient, 'ssn' | 'entries'>
